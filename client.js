@@ -1,6 +1,5 @@
 import React from 'react';
 import TypeScriptShow from './TypeScriptShow';
-console.log({TypeScriptShow});
 // import mockCol from './MockCol/mockColReducer.js'
 
 module.exports = function(){

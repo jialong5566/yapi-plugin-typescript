@@ -50,7 +50,6 @@ export function parse(
     usedNames
   );
 
-  console.log('-----before types', types);
   ast.params = types.map(type =>
     // We hoist description (for comment) and id/title (for standaloneName)
     // to the parent intersection type, so we remove it from the children.
@@ -85,14 +84,10 @@ function parseAsTypeWithCache(
   // TODO: Investigate alternative approaches (lazy-computing nodes, etc.)
   const ast = {};
   cachedTypeMap.set(type, ast)
-  console.log('after cachedTypeMap ast ==>',ast);
   // Update the AST in place. This updates the `processed` cache, as well
   // as any nodes that directly reference the node.
   const tmp = parseNonLiteral(schema, type, options, keyName, processed, usedNames)
   const temp =  Object.assign(ast, tmp);
-  console.log('parsed ast ==>',ast);
-  console.log('parsed tmp ==>',tmp);
-  console.log('parsed res ==>',temp);
   return temp;
 }
 
@@ -241,8 +236,6 @@ function parseNonLiteral(
         standaloneName: standaloneName(schema, keyNameFromDefinition, usedNames),
         params: (schema.type).map(type => {
           const member = {...omit(schema, 'description', 'id', 'title'), type}
-          console.log('=====UNION==>', member);
-
           return parse(maybeStripDefault(member), options, undefined, processed, usedNames)
         }),
         type: 'UNION'

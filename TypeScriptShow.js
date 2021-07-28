@@ -104,8 +104,6 @@ export default class TypeScript extends Component {
   }
 
   componentDidMount() {
-    console.log('state-->',this.state);
-    console.log('props--->',this.props);
     this.setTypeScript();
   }
   
