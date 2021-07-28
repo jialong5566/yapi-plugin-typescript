@@ -1,0 +1,24 @@
+{
+  "name": "yapi-plugin-typescript",
+  "version": "1.0.0",
+  "description": "yapi-plugin for interface typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jialong5566/yapi-plugin-typescript.git"
+  },
+  "keywords": [
+    "yapi",
+    "typescript",
+    "ts"
+  ],
+  "author": "jialong5566",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jialong5566/yapi-plugin-typescript/issues"
+  },
+  "homepage": "https://github.com/jialong5566/yapi-plugin-typescript#readme"
+}
