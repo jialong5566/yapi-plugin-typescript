@@ -46,7 +46,7 @@ export default class TypeScript extends Component {
     if(!Array.isArray(req_query) || !req_query.length){
       return;
     }
-    
+
     this.setState({
       reqQueryTypeScript: transReqQuery(req_query)
     });
@@ -55,14 +55,21 @@ export default class TypeScript extends Component {
     const {req_body_other, req_body_is_json_schema} = this.props.curdata;
     if(!req_body_other){
       return;
-    } 
+    }
     let reqBodyTypeScript;
 
     if(!req_body_is_json_schema){
       reqBodyTypeScript =  new Json2Ts().convert(req_body_other);
     } else {
-      const json = jsonSchema2ts(JSON.parse(req_body_other.toString()), this.state.reqBodyOptions);
-      reqBodyTypeScript = json;
+      let temp = {
+        "message": "当前接口typescript转换报错，请联系本包作者"
+      };
+      try{
+        temp = JSON.parse(JSON.stringify(eval(`(${req_body_other.toString()})`)));
+      }catch (e) {
+        console.log(e);
+      }
+      reqBodyTypeScript = jsonSchema2ts(temp, this.state.reqBodyOptions);
     }
 
     this.setState({
@@ -78,10 +85,16 @@ export default class TypeScript extends Component {
     if(!res_body_is_json_schema){
       resBodyTypeScript =  new Json2Ts().convert(res_body);
     } else {
-      const temp  = JSON.parse(res_body.toString());
+      let temp = {
+        "message": "当前接口typescript转换报错，请联系本包作者"
+      };
+      try{
+        temp  = JSON.parse(JSON.stringify(eval(`(${res_body.toString()})`)));
+      }catch (e) {
+        console.log(e);
+      }
       temp.title = 'RootObject';
-      const json = jsonSchema2ts(temp, this.state.resBodyOptions);
-      resBodyTypeScript = json;
+      resBodyTypeScript = jsonSchema2ts(temp, this.state.resBodyOptions);
     }
 
     this.setState({
@@ -106,7 +119,7 @@ export default class TypeScript extends Component {
   componentDidMount() {
     this.setTypeScript();
   }
-  
+
   render(){
     return (
       <div style={{padding: 20}}>
@@ -133,7 +146,7 @@ export default class TypeScript extends Component {
                   />
                 </Col>
                 <Col span={6}>
-                  <OptionConfig 
+                  <OptionConfig
                     onOptionsChange={(options)=>this.onOptionsChange('reqBodyOptions', options, this.setReqBodyTypeScript)}
                   />
                 </Col>
@@ -153,7 +166,7 @@ export default class TypeScript extends Component {
                   />
                 </Col>
                 <Col span={6}>
-                  <OptionConfig 
+                  <OptionConfig
                     onOptionsChange={(options)=>this.onOptionsChange('resBodyOptions', options, this.setResBodyTypeScript)}
                   />
                 </Col>
