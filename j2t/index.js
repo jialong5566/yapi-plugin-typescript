@@ -33,14 +33,14 @@ export const DEFAULT_OPTIONS = {
     trailingComma: 'none',
     useTabs: false
   },
-  declareExternallyReferenced: true
+  declareExternallyReferenced: true,
   // enableConstEnums: true,
   // format: true,
-  // ignoreMinAndMaxItems: false,
+  ignoreMinAndMaxItems: true
   // strictIndexSignatures: false,
-  
+
   // unreachableDefinitions: false,
-  // unknownAny: true
+  // unknownAny: false
 }
 
 export const DEFAULT_OPTIONS_LABEL = {
@@ -51,9 +51,9 @@ export const DEFAULT_OPTIONS_LABEL = {
   declareExternallyReferenced: '声明外部引用',
   enableConstEnums: '枚举常量化',
   format: '格式化',
-  ignoreMinAndMaxItems: '忽略范围',
+  ignoreMinAndMaxItems: '忽略数组最大最小数量',
   strictIndexSignatures: '严格索引标记',
-  
+
   unreachableDefinitions: '不可定义的范围',
   unknownAny: 'unknown转any'
 }
