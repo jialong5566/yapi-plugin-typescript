@@ -6,7 +6,6 @@ import { Json2Ts, transReqQuery } from "./util";
 import jsonSchema2ts from 'yapi-plugin-typescript/j2t';
 import OptionConfig from './OptionConfig';
 import {DEFAULT_OPTIONS} from './j2t/index';
-// import './index.scss';
 
 const { TextArea } = Input;
 
@@ -57,19 +56,17 @@ export default class TypeScript extends Component {
       return;
     }
     let reqBodyTypeScript;
-
-    if(!req_body_is_json_schema){
-      reqBodyTypeScript =  new Json2Ts().convert(req_body_other);
-    } else {
-      let temp = {
-        "message": "当前接口typescript转换报错，请联系本包作者"
-      };
-      try{
-        temp = JSON.parse(JSON.stringify(eval(`(${req_body_other.toString()})`)));
-      }catch (e) {
-        console.log(e);
+    try {
+      reqBodyTypeScript = (JSON.stringify(eval(`(${req_body_other.toString()})`)));
+      if(!req_body_is_json_schema){
+        reqBodyTypeScript =  new Json2Ts().convert(reqBodyTypeScript);
+      } else {
+        reqBodyTypeScript = JSON.parse(reqBodyTypeScript);
+        reqBodyTypeScript.title = reqBodyTypeScript.title || 'RootObject';
+        reqBodyTypeScript = jsonSchema2ts(reqBodyTypeScript, this.state.reqBodyOptions);
       }
-      reqBodyTypeScript = jsonSchema2ts(temp, this.state.reqBodyOptions);
+    } catch (error) {
+      console.log(error);
     }
 
     this.setState({
@@ -82,19 +79,20 @@ export default class TypeScript extends Component {
       return;
     }
     let resBodyTypeScript;
-    if(!res_body_is_json_schema){
-      resBodyTypeScript =  new Json2Ts().convert(res_body);
-    } else {
-      let temp = {
-        "message": "当前接口typescript转换报错，请联系本包作者"
-      };
-      try{
-        temp  = JSON.parse(JSON.stringify(eval(`(${res_body.toString()})`)));
-      }catch (e) {
-        console.log(e);
+    console.log('res_body',res_body);
+    try {
+      resBodyTypeScript = (JSON.stringify(eval(`(${res_body.toString()})`)));
+      console.log('resBodyTypeScript',resBodyTypeScript);
+
+      if(!res_body_is_json_schema){
+        resBodyTypeScript =  new Json2Ts().convert(resBodyTypeScript);
+      } else {
+        resBodyTypeScript = JSON.parse(resBodyTypeScript);
+        resBodyTypeScript.title = resBodyTypeScript.title || 'RootObject';
+        resBodyTypeScript = jsonSchema2ts(resBodyTypeScript, this.state.resBodyOptions);
       }
-      temp.title = 'RootObject';
-      resBodyTypeScript = jsonSchema2ts(temp, this.state.resBodyOptions);
+    } catch (error) {
+      console.log(error);
     }
 
     this.setState({
